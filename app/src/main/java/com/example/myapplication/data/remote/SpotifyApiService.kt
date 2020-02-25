@@ -1,7 +1,6 @@
-package com.example.myapplication
+package com.example.myapplication.data.remote
 
 import io.reactivex.Single
-import retrofit2.Call
 import retrofit2.http.GET
 
 interface SpotifyApiService {

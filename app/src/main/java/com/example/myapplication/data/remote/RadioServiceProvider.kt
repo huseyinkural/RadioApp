@@ -1,5 +1,6 @@
-package com.example.myapplication
+package com.example.myapplication.data.remote
 
+import com.example.myapplication.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory

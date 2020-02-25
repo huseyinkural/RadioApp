@@ -1,12 +1,12 @@
-package com.example.myapplication.main
+package com.example.myapplication.ui.main
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.example.myapplication.R
-import com.example.myapplication.favorites.FavoritesFragment
-import com.example.myapplication.radios.RadiosFragment
+import com.example.myapplication.ui.favorites.FavoritesFragment
+import com.example.myapplication.ui.radios.RadiosFragment
 import java.lang.IllegalStateException
 
 class MainPagerAdapter(context: Context, fragmentManager: FragmentManager, behavior:Int) : FragmentStatePagerAdapter(fragmentManager,behavior){

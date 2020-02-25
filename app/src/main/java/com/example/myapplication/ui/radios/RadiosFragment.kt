@@ -1,4 +1,4 @@
-package com.example.myapplication.radios
+package com.example.myapplication.ui.radios
 
 import android.os.Bundle
 import android.util.Log
@@ -7,21 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
-import com.example.myapplication.Radio
-import com.example.myapplication.RadioServiceProvider
-import io.reactivex.Observable
-import io.reactivex.Scheduler
+import com.example.myapplication.data.RadioDataSource
+import com.example.myapplication.data.remote.RadioServiceProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class RadiosFragment : Fragment(){
 
-    private val radioServiceProvider = RadioServiceProvider()
+    val radioDataSource = RadioDataSource()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,30 +28,23 @@ class RadiosFragment : Fragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
-        val popularRadioObservable = radioServiceProvider
-            .getRadioService()
-            .getPopularRadios()
+        radioDataSource
+            .fetchPopularRadios()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {Log.v("TEST","success: $it") },
-                {Log.v("TEST","Error: $it") })
+            .subscribe{ resource->
+                Log.v("Test", resource.status.toString())
 
+            }
 
-
-
-        radioServiceProvider
-            .getRadioService()
-            .getLocationRadios()
+        radioDataSource
+            .fetchLocalRadios()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {Log.v("TEST","success local: $it") },
-                {Log.v("TEST","Error: $it") })
-
-
-
+            .subscribe{
+                resource->
+                Log.v("Test",resource.status.toString())
+            }
 
     }
     companion object{
