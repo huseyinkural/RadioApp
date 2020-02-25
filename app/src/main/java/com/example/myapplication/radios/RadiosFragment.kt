@@ -9,6 +9,11 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.Radio
 import com.example.myapplication.RadioServiceProvider
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,29 +35,29 @@ class RadiosFragment : Fragment(){
         super.onActivityCreated(savedInstanceState)
 
 
-        radioServiceProvider
+        val popularRadioObservable = radioServiceProvider
             .getRadioService()
             .getPopularRadios()
-            .enqueue(object : Callback<List<Radio>> {
-                override fun onResponse(call: Call<List<Radio>>, response: Response<List<Radio>>) {
-                    Log.v("Test", "Success popular: ${response.body().toString()}")
-                }
-                override fun onFailure(call: Call<List<Radio>>, t: Throwable) {
-                    Log.v("Test", "Failed")
-                }
-            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {Log.v("TEST","success: $it") },
+                {Log.v("TEST","Error: $it") })
+
+
+
 
         radioServiceProvider
             .getRadioService()
             .getLocationRadios()
-            .enqueue(object : Callback<List<Radio>> {
-                override fun onResponse(call: Call<List<Radio>>, response: Response<List<Radio>>) {
-                    Log.v("Test", "Success location: ${response.body().toString()}")
-                }
-                override fun onFailure(call: Call<List<Radio>>, t: Throwable) {
-                    Log.v("Test", "Failed")
-                }
-            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {Log.v("TEST","success local: $it") },
+                {Log.v("TEST","Error: $it") })
+
+
+
 
     }
     companion object{
